@@ -1,0 +1,1 @@
+User --> [Frontend HTML] --> POST request --> [Flask Server Backend] --> Bot Reply --> [Frontend HTML shows it]
