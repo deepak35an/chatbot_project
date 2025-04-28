@@ -10,7 +10,7 @@ This way your dependencies stay inside the project
 step 1 
       create main folder named chatbot-projects
 step 2 
-      create 2 folders in chatbot-projects named statics and temlates
+      create 2 folders in chatbot-projects named statics and templates
       in template create index.html
       in statics create style.css
 step 3 
