@@ -1,25 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chat Board</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="chat-container">
-    <div class="chat-header">Chat Board</div>
-    
-    <div class="chat-messages" id="chat-messages">
-      <!-- Sample messages -->
-      <div class="message received">Hello! How can I help you?</div>
-      <div class="message sent">Hi! I need some info.</div>
-    </div>
 
-    <div class="chat-input">
-      <input type="text" placeholder="Type a message..." />
-      <button>Send</button>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Board</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="chat-container">
+        <div class="chat-header">Chat Board</div>
+
+        <div class="chat-messages" id="chat-messages">
+            <!-- No initial messages now -->
+        </div>
+
+        <div class="chat-input">
+            <input type="text" placeholder="Type a message..." />
+            <button>Send</button>
+        </div>
     </div>
-  </div>
+    <script>
+        const input = document.querySelector('.chat-input input');
+        const button = document.querySelector('.chat-input button');
+        const messages = document.getElementById('chat-messages');
+
+        // Function to send a message
+        function sendMessage() {
+            const text = input.value.trim();
+            if (text !== "") {
+                // Create and append user message
+                const message = document.createElement('div');
+                message.classList.add('message', 'sent');
+                message.textContent = text;
+                messages.appendChild(message);
+                messages.scrollTop = messages.scrollHeight;
+
+                // Clear input
+                input.value = "";
+
+                // Send message to Flask backend
+                fetch("/get", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                    body: "msg=" + encodeURIComponent(text)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Create and append bot response
+                        const reply = document.createElement('div');
+                        reply.classList.add('message', 'received');
+                        reply.textContent = data.response;
+                        messages.appendChild(reply);
+                        messages.scrollTop = messages.scrollHeight;
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        const errorMsg = document.createElement('div');
+                        errorMsg.classList.add('message', 'received');
+                        errorMsg.textContent = "Sorry, the server is not responding.";
+                        messages.appendChild(errorMsg);
+                        messages.scrollTop = messages.scrollHeight;
+                    });
+            }
+        }
+
+        // Send on button click
+        button.addEventListener('click', sendMessage);
+
+        // Send on Enter key press
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+
 </body>
+
 </html>
