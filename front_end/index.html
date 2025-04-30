@@ -1,41 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Customer Support Chatbot</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat Board</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Customer Support Chatbot</h1>
-    <div id="chatbox">
-        <div id="chatlog"></div>
-        <form id="chat-form">
-            <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required>
-            <button type="submit">Send</button>
-        </form>
+  <div class="chat-container">
+    <div class="chat-header">Chat Board</div>
+    
+    <div class="chat-messages" id="chat-messages">
+      <!-- Sample messages -->
+      <div class="message received">Hello! How can I help you?</div>
+      <div class="message sent">Hi! I need some info.</div>
     </div>
 
-    <script>
-        const chatForm = document.getElementById("chat-form");
-        const userInput = document.getElementById("user-input");
-        const chatlog = document.getElementById("chatlog");
-
-        chatForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const msg = userInput.value;
-            chatlog.innerHTML += `<div><b>You:</b> ${msg}</div>`;
-
-            const response = await fetch("/get", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `msg=${encodeURIComponent(msg)}`
-            });
-            const data = await response.json();
-            chatlog.innerHTML += `<div><b>Bot:</b> ${data.response}</div>`;
-
-            userInput.value = "";
-            chatlog.scrollTop = chatlog.scrollHeight;
-        });
-    </script>
+    <div class="chat-input">
+      <input type="text" placeholder="Type a message..." />
+      <button>Send</button>
+    </div>
+  </div>
 </body>
 </html>
