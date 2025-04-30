@@ -15,3 +15,6 @@ step 2
       in statics create style.css
 step 3 
       in main folder(chatbot-projects) create app.py
+      firstly train data by running train_model.py, will get intent_model.pkl.
+      to run train_model.py, needs training_data.py
+      before starting the flask server app.py needs intent_model.pkl. So, keep it file in main folder i.e chatbot-projects.
